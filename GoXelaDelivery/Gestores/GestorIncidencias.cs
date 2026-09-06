@@ -11,7 +11,7 @@ class GestorIncidencias
 
     private int contadorCodigo = 1;
 
-    public void RegistrarIncidencia(string tipo, string descripcion, string fecha, string estado, string accion)
+    public void RegistrarIncidencia(string tipo, string descripcion, DateTime fecha)
     {
         if (string.IsNullOrWhiteSpace(tipo))
         {
@@ -25,12 +25,12 @@ class GestorIncidencias
             return;
         }
 
-        Incidencia nuevaIncidencia = new Incidencia(contadorCodigo, tipo, descripcion, fecha, estado, accion);
+        Incidencia nuevaIncidencia = new Incidencia(contadorCodigo, tipo, descripcion, fecha);
         incidencias.Add(nuevaIncidencia);
         Console.WriteLine($"Incidencia registrada exitosamente con código {contadorCodigo}");
         contadorCodigo++;
     }
-   
+
     public Incidencia ConsultarIncidencia(int codigo)
     {
         foreach (var i in incidencias)
@@ -60,14 +60,14 @@ class GestorIncidencias
         }
     }
 
-    public void ActualizarEstadoIncidencia(int codigo, string nuevoEstado)
+    public void ActualizarEstadoIncidencia(int codigo)
     {
         foreach (var i in incidencias)
         {
             if (i.Codigo == codigo)
             {
-                i.Estado = nuevoEstado;
-                Console.WriteLine($"Estado de la incidencia {codigo} actualizado a {nuevoEstado}");
+                i.CerrarIncidencia(); 
+                Console.WriteLine($"Incidencia {codigo} cerrada");
                 return;
             }
         }
