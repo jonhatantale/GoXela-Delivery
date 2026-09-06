@@ -26,6 +26,48 @@ class GestorEntregas
         gestorIncidencias = gi;
     }
 
+    public void RegistrarEntrega(int codigoCliente, int codigoPaquete, int codigoRepartidor, int codigoVehiculo, string fecha, string origen, string destino, double distancia, string tipoServicio)
+    {
+        Cliente cliente = gestorClientes.ObtenerClientePorCodigo(codigoCliente);
+        if (cliente == null)
+        {
+            Console.WriteLine("Error: Cliente no encontrado");
+            return;
+        }
+
+        Paquete paquete = gestorPaquetes.ObtenerPaquetePorCodigo(codigoPaquete);
+        if (paquete == null)
+        {
+            Console.WriteLine("Error: Paquete no encontrado");
+            return;
+        }
+
+        Repartidor repartidor = gestorRepartidores.ObtenerRepartidorPorCodigo(codigoRepartidor);
+        if (repartidor == null)
+        {
+            Console.WriteLine("Error: Repartidor no encontrado");
+            return;
+        }
+
+        Vehiculo vehiculo = gestorVehiculos.ObtenerVehiculoPorCodigo(codigoVehiculo);
+        if (vehiculo == null)
+        {
+            Console.WriteLine("Error: Vehículo no encontrado");
+            return;
+        }
+
+        if (!vehiculo.PuedeTransportar(paquete))
+        {
+            Console.WriteLine("Error: El vehículo no puede transportar este paquete");
+            return;
+        }
+
+        Entrega nuevaEntrega = new Entrega(contadorCodigo, cliente, paquete, repartidor, vehiculo, fecha, origen, destino, distancia, tipoServicio);
+        nuevaEntrega.CalcularTarifa();
+        entregas.Add(nuevaEntrega);
+        Console.WriteLine($"Entrega registrada con código {contadorCodigo}. Total: Q{nuevaEntrega.Total}");
+        contadorCodigo++;
+    }
 
     public Entrega ConsultarEntrega(int codigo)
     {
