@@ -83,4 +83,13 @@ class GestorPaquetes
         Console.WriteLine($"Producto refrigerado registrado con código {contador}");
         contador++;
     }
+    public Paquete ObtenerPaquetePorCodigo(int codigo)
+    {
+        foreach (var p in paquetes)
+        {
+            if (p.Codigo == codigo)
+                return p;
+        }
+        return null;
+    }
 }
