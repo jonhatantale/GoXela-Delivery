@@ -4,6 +4,11 @@ using System.Collections.Generic;
 class GestorRepartidores
 {
     private List<Repartidor> repartidores = new List<Repartidor>();
+    public List<Repartidor> Repartidores
+    {
+        get { return repartidores; }
+    }
+
     private int contador = 1;
     
     public void RegistrarRepartidor(string nombre, int telefono, int licencia, string tipoLicencia)

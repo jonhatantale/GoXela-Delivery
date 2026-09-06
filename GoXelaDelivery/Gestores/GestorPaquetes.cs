@@ -3,6 +3,11 @@ using System.Collections.Generic;
 class GestorPaquetes
 {
     private List<Paquete> paquetes = new List<Paquete>();
+    public List<Paquete> Paquetes
+    {
+        get { return paquetes; }
+    }
+
     private int contador = 1;
 
     public void RegistrarDocumento(string descripcion, double peso, double valorDeclarado, string origen, string destino)

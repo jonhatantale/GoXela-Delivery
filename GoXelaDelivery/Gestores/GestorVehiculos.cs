@@ -4,8 +4,11 @@ using System.Collections.Generic;
 class GestorVehiculos
 {
     private List<Vehiculo> vehiculos = new List<Vehiculo>();
+    public List<Vehiculo> Vehiculos
+    {
+        get { return vehiculos; }
+    }
 
-    
     private int contador = 1;
 
     public void RegistrarVehiculo(int tipo, string placa, string marca, string modelo, int capacidad, double costoBase, bool tieneRefri = false)

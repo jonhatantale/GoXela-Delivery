@@ -4,6 +4,11 @@ using System.Collections.Generic;
 class GestorIncidencias
 {
     private List<Incidencia> incidencias = new List<Incidencia>();
+    public List<Incidencia> Incidencias
+    {
+        get { return incidencias; }
+    }
+
     private int contadorCodigo = 1;
 
     public void RegistrarIncidencia(string tipo, string descripcion, string fecha, string estado, string accion)
