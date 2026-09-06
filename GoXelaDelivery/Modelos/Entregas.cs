@@ -1,6 +1,4 @@
 using System;
-
-using System;
 using System.Collections.Generic;
 
 class Entrega
@@ -158,4 +156,35 @@ class Entrega
         }
     }
 
+    public void CalcularTarifa()
+    {
+        if (Paquete != null && Vehiculo != null)
+        {
+            TarifaBase = Paquete.CalcularTarifa(DistanciaEstimada, TipoServicio);
+            Total = TarifaBase + Recargos - Descuentos;
+            if (Total < 0)
+                Total = 0;
+        }
+    }
+
+    public void CambiarEstado(string nuevoEstado)
+    {
+        Estado = nuevoEstado;
+    }
+
+    public void AgregarIncidencia(Incidencia incidencia)
+    {
+        if (incidencia != null)
+            Incidencias.Add(incidencia);
+    }
+
+    public void MostrarInformacion()
+    {
+        Console.WriteLine($"Entrega {Codigo}: {Estado}");
+        Console.WriteLine($"Cliente: {Cliente.NombreCompleto}");
+        Console.WriteLine($"De: {DireccionOrigen} a {DireccionDestino}");
+        Console.WriteLine($"Distancia: {DistanciaEstimada}km");
+        Console.WriteLine($"Total: Q{Total}");
+        Console.WriteLine($"Incidencias: {Incidencias.Count}");
+    }
 }
