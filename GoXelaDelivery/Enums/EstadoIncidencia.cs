@@ -1,0 +1,5 @@
+﻿enum EstadoIncidencia
+{
+    Abierta,
+    Cerrada
+}
