@@ -156,10 +156,10 @@ class Entrega
         }
     }
 
-    private List<Incidencias> incidencia = new List<Incidencias>();
-    public List<Incidencias> Incidencia
+    private List<Incidencia> incidencias = new List<Incidencia>();
+    public List<Incidencia> Incidencias
     {
-        get { return incidencia; }
+        get { return incidencias; }
     }
 
     public Entrega(int codigo1, Cliente cliente1, Paquete paquete1, Repartidor repartidor1, Vehiculo vehiculo1, string fecha1, string origen1, string destino1, double distancia1, string tipo1)
@@ -197,7 +197,7 @@ class Entrega
         Estado = nuevoEstado;
     }
 
-    public void AgregarIncidencia(Incidencias incidencia)
+    public void AgregarIncidencia(Incidencia incidencia)
     {
         if (incidencia != null)
             Incidencias.Add(incidencia);
