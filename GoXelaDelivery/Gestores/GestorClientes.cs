@@ -4,6 +4,11 @@ using System.Collections.Generic;
 class GestorClientes
 {
     private List<Cliente> clientes = new List<Cliente>();
+    public List<Cliente> Clientes
+    {
+        get { return clientes; }
+    }
+
     private int contador = 1;
 
     public void RegistrarCliente(string nombre, int telefono, string correo, string direccion)
