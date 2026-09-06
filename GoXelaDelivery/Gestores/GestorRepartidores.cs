@@ -46,4 +46,13 @@ class GestorRepartidores
         Console.WriteLine($"Repartidor registrado exitosamente con código {contador}");
         contador++;
     }
+    public Repartidor ObtenerRepartidorPorCodigo(int codigo)
+    {
+        foreach (var r in repartidores)
+        {
+            if (r.Codigo == codigo)
+                return r;
+        }
+        return null;
+    }
 }
