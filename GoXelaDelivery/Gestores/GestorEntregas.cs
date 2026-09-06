@@ -128,4 +128,22 @@ class GestorEntregas
         }
         return null;
     }
+
+    public unsafe void CompararEntregas(int codigo1, int codigo2)
+    {
+        Entrega e1 = ObtenerEntregaPorCodigo(codigo1);
+        Entrega e2 = ObtenerEntregaPorCodigo(codigo2);
+
+        if (e1 == null || e2 == null)
+        {
+            Console.WriteLine("Una o ambas entregas no existen");
+            return;
+        }
+
+        fixed (char* p1 = e1.Estado, p2 = e2.Estado)
+        {
+            Console.WriteLine($"Entrega 1 estado: {new string(p1)}");
+            Console.WriteLine($"Entrega 2 estado: {new string(p2)}");
+        }
+    }
 }
