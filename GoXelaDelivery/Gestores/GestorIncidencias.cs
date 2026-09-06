@@ -25,4 +25,62 @@ class GestorIncidencias
         Console.WriteLine($"Incidencia registrada exitosamente con código {contadorCodigo}");
         contadorCodigo++;
     }
+   
+    public Incidencia ConsultarIncidencia(int codigo)
+    {
+        foreach (var i in incidencias)
+        {
+            if (i.Codigo == codigo)
+            {
+                i.MostrarInformacion();
+                return i;
+            }
+        }
+        Console.WriteLine("Incidencia no encontrada");
+        return null;
+    }
+
+    public void ListarIncidencias()
+    {
+        if (incidencias.Count == 0)
+        {
+            Console.WriteLine("No hay incidencias registradas");
+            return;
+        }
+
+        foreach (var i in incidencias)
+        {
+            i.MostrarInformacion();
+            Console.WriteLine("---");
+        }
+    }
+
+    public void ActualizarEstadoIncidencia(int codigo, string nuevoEstado)
+    {
+        foreach (var i in incidencias)
+        {
+            if (i.Codigo == codigo)
+            {
+                i.Estado = nuevoEstado;
+                Console.WriteLine($"Estado de la incidencia {codigo} actualizado a {nuevoEstado}");
+                return;
+            }
+        }
+        Console.WriteLine("Incidencia no encontrada");
+    }
+
+    public int ContarIncidencias()
+    {
+        return incidencias.Count;
+    }
+
+    public Incidencia ObtenerIncidenciaPorCodigo(int codigo)
+    {
+        foreach (var i in incidencias)
+        {
+            if (i.Codigo == codigo)
+                return i;
+        }
+        return null;
+    }
 }
