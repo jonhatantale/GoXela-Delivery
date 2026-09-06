@@ -156,6 +156,31 @@ class Entrega
         }
     }
 
+    private List<Incidencia> incidencias = new List<Incidencia>();
+    public List<Incidencia> Incidencias
+    {
+        get { return incidencias; }
+    }
+
+    public Entrega(int codigo1, Cliente cliente1, Paquete paquete1, Repartidor repartidor1, Vehiculo vehiculo1, string fecha1, string origen1, string destino1, double distancia1, string tipo1)
+    {
+        Codigo = codigo1;
+        Cliente = cliente1;
+        Paquete = paquete1;
+        Repartidor = repartidor1;
+        Vehiculo = vehiculo1;
+        FechaSolicitud = fecha1;
+        DireccionOrigen = origen1;
+        DireccionDestino = destino1;
+        DistanciaEstimada = distancia1;
+        TipoServicio = tipo1;
+        Estado = "Solicitada";
+        TarifaBase = 0;
+        Recargos = 0;
+        Descuentos = 0;
+        Total = 0;
+    }
+
     public void CalcularTarifa()
     {
         if (Paquete != null && Vehiculo != null)
