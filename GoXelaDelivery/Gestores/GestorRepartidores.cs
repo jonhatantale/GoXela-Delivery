@@ -55,4 +55,46 @@ class GestorRepartidores
         }
         return null;
     }
+    public Repartidor ConsultarRepartidor(int codigo)
+    {
+        foreach (var r in repartidores)
+        {
+            if (r.Codigo == codigo)
+            {
+                r.MostrarInformacion();
+                return r;
+            }
+        }
+        Console.WriteLine("Repartidor no encontrado");
+        return null;
+    }
+
+    public void ListarRepartidores()
+    {
+        if (repartidores.Count == 0)
+        {
+            Console.WriteLine("No hay repartidores registrados");
+            return;
+        }
+
+        foreach (var r in repartidores)
+        {
+            r.MostrarInformacion();
+            Console.WriteLine("---");
+        }
+    }
+
+    public void CambiarEstadoRepartidor(int codigo, EstadoRepartidor nuevoEstado)
+    {
+        foreach (var r in repartidores)
+        {
+            if (r.Codigo == codigo)
+            {
+                r.Estado = nuevoEstado;
+                Console.WriteLine($"Estado del repartidor {codigo} actualizado a {nuevoEstado}");
+                return;
+            }
+        }
+        Console.WriteLine("Repartidor no encontrado");
+    }
 }
