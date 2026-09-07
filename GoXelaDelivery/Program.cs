@@ -8,7 +8,7 @@ class Program
     static GestorPaquetes gestorPaquetes = new GestorPaquetes();
     static GestorEntregas gestorEntregas = new GestorEntregas(gestorClientes, gestorVehiculos, gestorRepartidores, gestorPaquetes, null);
     static GestorIncidencias gestorIncidencias = new GestorIncidencias();
-    static GestorReportes gestorReportes = new GestorReportes();
+    static GestorReportes gestorReportes = new GestorReportes(gestorEntregas, gestorRepartidores, gestorVehiculos, gestorPaquetes);
 
     static void Main()
     {
@@ -75,7 +75,7 @@ class Program
             Console.WriteLine("4. Actualizar cliente");
             Console.WriteLine("0. Volver");
             Console.Write("Opción: ");
-            int op = ConvertToInt32(Console.ReadLine());
+            int op = int.Parse(Console.ReadLine());
 
             switch (op)
             {
@@ -159,61 +159,64 @@ class Program
         Console.WriteLine("4. Cambiar estado");
         Console.WriteLine("0. Volver");
         Console.Write("Opción: ");
-        int op = Console.ReadLine();
+        int op = int.Parse(Console.ReadLine());
 
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case 1:
-                Console.WriteLine("Tipo: 1=Bicicleta, 2=Motocicleta, 3=Automóvil");
-                Console.Write("Tipo: ");
-                int tipo = int.Parse(Console.ReadLine());
-                Console.Write("Placa (o vacío si es bicicleta): ");
-                string placa = Console.ReadLine();
-                Console.Write("Marca: ");
-                string marca = Console.ReadLine();
-                Console.Write("Modelo: ");
-                string modelo = Console.ReadLine();
-                Console.Write("Capacidad (kg): ");
-                int capacidad = int.Parse(Console.ReadLine());
-                Console.Write("Costo operativo base: ");
-                double costo = double.Parse(Console.ReadLine());
+            switch (op)
+            {
+                case 1:
+                    Console.WriteLine("Tipo: 1=Bicicleta, 2=Motocicleta, 3=Automóvil");
+                    Console.Write("Tipo: ");
+                    int tipo = int.Parse(Console.ReadLine());
+                    Console.Write("Placa (o vacío si es bicicleta): ");
+                    string placa = Console.ReadLine();
+                    Console.Write("Marca: ");
+                    string marca = Console.ReadLine();
+                    Console.Write("Modelo: ");
+                    string modelo = Console.ReadLine();
+                    Console.Write("Capacidad (kg): ");
+                    int capacidad = int.Parse(Console.ReadLine());
+                    Console.Write("Costo operativo base: ");
+                    double costo = double.Parse(Console.ReadLine());
 
-                bool tieneRefri = false;
-                if (tipo == 3)
-                {
-                    Console.Write("¿Tiene refrigeración? (s/n): ");
-                    tieneRefri = Console.ReadLine().ToLower() == "s";
-                }
+                    bool tieneRefri = false;
+                    if (tipo == 3)
+                    {
+                        Console.Write("¿Tiene refrigeración? (s/n): ");
+                        tieneRefri = Console.ReadLine().ToLower() == "s";
+                    }
 
-                gestorVehiculos.RegistrarVehiculo(tipo, placa, marca, modelo, capacidad, costo, tieneRefri);
-                break;
-            case 2:
-                Console.Write("Código del vehículo: ");
-                int codigoVeh = int.Parse(Console.ReadLine());
-                gestorVehiculos.ConsultarVehiculo(codigoVeh);
-                break;
-            case 3:
-                gestorVehiculos.ListarVehiculos();
-                break;
-            case 4:
-                Console.Write("Código del vehículo: ");
-                int codCambiar = int.Parse(Console.ReadLine());
-                Console.WriteLine("Nuevo estado: Disponible, Asignado, EnMantenimiento");
-                Console.Write("Estado: ");
-                string estadoStr = Console.ReadLine();
-                if (Enum.TryParse(estadoStr, out EstadoVehiculo nuevoEstado))
-                    gestorVehiculos.CambiarEstadoVehiculo(codCambiar, nuevoEstado);
-                else
-                    Console.WriteLine("Estado inválido");
-                break;
+                    gestorVehiculos.RegistrarVehiculo(tipo, placa, marca, modelo, capacidad, costo, tieneRefri);
+                    break;
+                case 2:
+                    Console.Write("Código del vehículo: ");
+                    int codigoVeh = int.Parse(Console.ReadLine());
+                    gestorVehiculos.ConsultarVehiculo(codigoVeh);
+                    break;
+                case 3:
+                    gestorVehiculos.ListarVehiculos();
+                    break;
+                case 4:
+                    Console.Write("Código del vehículo: ");
+                    int codCambiar = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Nuevo estado: Disponible, Asignado, EnMantenimiento");
+                    Console.Write("Estado: ");
+                    string estadoStr = Console.ReadLine();
+                    if (Enum.TryParse(estadoStr, out EstadoVehiculo nuevoEstado))
+                        gestorVehiculos.CambiarEstadoVehiculo(codCambiar, nuevoEstado);
+                    else
+                        Console.WriteLine("Estado inválido");
+                    break;
+                case 0:
+                    volver = true;
+                    break;
 
-            case 0:
-                volver = true;
-                break;
-
-            default:
-                Console.WriteLine("Opción inválida");
-                break;
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
 
     }
@@ -251,60 +254,64 @@ class Program
         Console.WriteLine("4. Cambiar estado");
         Console.WriteLine("0. Volver");
         Console.Write("Opción: ");
-        int op = Console.ReadLine();
+        int op = int.Parse(Console.ReadLine());
 
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case 1:
-                Console.Write("Código cliente: ");
-                int codCliente = int.Parse(Console.ReadLine());
-                Console.Write("Código paquete: ");
-                int codPaquete = int.Parse(Console.ReadLine());
-                Console.Write("Código repartidor: ");
-                int codRepartidor = int.Parse(Console.ReadLine());
-                Console.Write("Código vehículo: ");
-                int codVehiculo = int.Parse(Console.ReadLine());
-                Console.Write("Fecha (dd/mm/yyyy): ");
-                string fecha = Console.ReadLine();
-                Console.Write("Dirección origen: ");
-                string origen = Console.ReadLine();
-                Console.Write("Dirección destino: ");
-                string destino = Console.ReadLine();
-                Console.Write("Distancia (km): ");
-                double distancia = double.Parse(Console.ReadLine());
-                Console.WriteLine("Tipo: Normal, Prioritario, Urgente");
-                Console.Write("Tipo de servicio: ");
-                string tipoServicio = Console.ReadLine();
+            switch (op)
+            {
+                case 1:
+                    Console.Write("Código cliente: ");
+                    int codCliente = int.Parse(Console.ReadLine());
+                    Console.Write("Código paquete: ");
+                    int codPaquete = int.Parse(Console.ReadLine());
+                    Console.Write("Código repartidor: ");
+                    int codRepartidor = int.Parse(Console.ReadLine());
+                    Console.Write("Código vehículo: ");
+                    int codVehiculo = int.Parse(Console.ReadLine());
+                    Console.Write("Fecha (dd/mm/yyyy): ");
+                    string fecha = Console.ReadLine();
+                    Console.Write("Dirección origen: ");
+                    string origen = Console.ReadLine();
+                    Console.Write("Dirección destino: ");
+                    string destino = Console.ReadLine();
+                    Console.Write("Distancia (km): ");
+                    double distancia = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Tipo: Normal, Prioritario, Urgente");
+                    Console.Write("Tipo de servicio: ");
+                    string tipoServicio = Console.ReadLine();
 
-                gestorEntregas.RegistrarEntrega(codCliente, codPaquete, codRepartidor, codVehiculo, fecha, origen, destino, distancia, tipoServicio);
-                break;
+                    gestorEntregas.RegistrarEntrega(codCliente, codPaquete, codRepartidor, codVehiculo, fecha, origen, destino, distancia, tipoServicio);
+                    break;
 
-            case 2:
-                Console.Write("Código de entrega: ");
-                int codEnt = int.Parse(Console.ReadLine());
-                gestorEntregas.ConsultarEntrega(codEnt);
-                break;
+                case 2:
+                    Console.Write("Código de entrega: ");
+                    int codEnt = int.Parse(Console.ReadLine());
+                    gestorEntregas.ConsultarEntrega(codEnt);
+                    break;
 
-            case 3:
-                gestorEntregas.ListarEntregas();
-                break;
+                case 3:
+                    gestorEntregas.ListarEntregas();
+                    break;
 
-            case 4:
-                Console.Write("Código de entrega: ");
-                int codCambiarEnt = int.Parse(Console.ReadLine());
-                Console.WriteLine("Estados: Solicitada, Asignada, Recogida, EnRuta, Entregada, Cancelada, Reprogramada");
-                Console.Write("Nuevo estado: ");
-                string nuevoEstado = Console.ReadLine();
-                gestorEntregas.CambiarEstadoEntrega(codCambiarEnt, nuevoEstado);
-                break;
+                case 4:
+                    Console.Write("Código de entrega: ");
+                    int codCambiarEnt = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Estados: Solicitada, Asignada, Recogida, EnRuta, Entregada, Cancelada, Reprogramada");
+                    Console.Write("Nuevo estado: ");
+                    string nuevoEstado = Console.ReadLine();
+                    gestorEntregas.CambiarEstadoEntrega(codCambiarEnt, nuevoEstado);
+                    break;
 
-            case 0:
-                volver = true;
-                break;
+                case 0:
+                    volver = true;
+                    break;
 
-            default:
-                Console.WriteLine("Opción inválida");
-                break;
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
     }
 
@@ -321,11 +328,11 @@ class Program
             Console.WriteLine("4. Actualizar estado");
             Console.WriteLine("0. Volver");
             Console.Write("Opción: ");
-            string op = Console.ReadLine();
+            int op = int.Parse(Console.ReadLine());
 
             switch (op)
             {
-                case "1":
+                case 1:
                     Console.Write("Tipo de incidencia: ");
                     string tipo = Console.ReadLine();
                     Console.Write("Descripción: ");
@@ -336,26 +343,23 @@ class Program
                     gestorIncidencias.RegistrarIncidencia(tipo, descripcion, DateTime.Parse(fechaInc));
                     break;
 
-                case "2":
+                case 2:
                     Console.Write("Código de incidencia: ");
                     int codInc = int.Parse(Console.ReadLine());
                     gestorIncidencias.ConsultarIncidencia(codInc);
                     break;
 
-                case "3":
+                case 3:
                     gestorIncidencias.ListarIncidencias();
                     break;
 
-                case "4":
+                case 4:
                     Console.Write("Código de incidencia: ");
                     int codActInc = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Estados: Abierta, Cerrada, Pendiente");
-                    Console.Write("Nuevo estado: ");
-                    string nuevoEstadoInc = Console.ReadLine();
-                    gestorIncidencias.ActualizarEstadoIncidencia(codActInc, nuevoEstadoInc);
+                    gestorIncidencias.ActualizarEstadoIncidencia(codActInc);
                     break;
 
-                case "0":
+                case 0:
                     volver = true;
                     break;
 
