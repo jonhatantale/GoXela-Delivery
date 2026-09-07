@@ -334,50 +334,118 @@ class Program
         Console.WriteLine("4. Cambiar estado");
         Console.WriteLine("0. Volver");
         Console.Write("Opción: ");
-        string op = Console.ReadLine();
+        int op = Console.ReadLine();
 
         switch (op)
         {
-            case "1":
-                // TODO
+            case 1:
+                Console.Write("Código cliente: ");
+                int codCliente = int.Parse(Console.ReadLine());
+                Console.Write("Código paquete: ");
+                int codPaquete = int.Parse(Console.ReadLine());
+                Console.Write("Código repartidor: ");
+                int codRepartidor = int.Parse(Console.ReadLine());
+                Console.Write("Código vehículo: ");
+                int codVehiculo = int.Parse(Console.ReadLine());
+                Console.Write("Fecha (dd/mm/yyyy): ");
+                string fecha = Console.ReadLine();
+                Console.Write("Dirección origen: ");
+                string origen = Console.ReadLine();
+                Console.Write("Dirección destino: ");
+                string destino = Console.ReadLine();
+                Console.Write("Distancia (km): ");
+                double distancia = double.Parse(Console.ReadLine());
+                Console.WriteLine("Tipo: Normal, Prioritario, Urgente");
+                Console.Write("Tipo de servicio: ");
+                string tipoServicio = Console.ReadLine();
+
+                gestorEntregas.RegistrarEntrega(codCliente, codPaquete, codRepartidor, codVehiculo, fecha, origen, destino, distancia, tipoServicio);
                 break;
-            case "2":
-                // TODO
+
+            case 2:
+                Console.Write("Código de entrega: ");
+                int codEnt = int.Parse(Console.ReadLine());
+                gestorEntregas.ConsultarEntrega(codEnt);
                 break;
-            case "3":
+
+            case 3:
                 gestorEntregas.ListarEntregas();
                 break;
-            case "4":
-                // TODO
+
+            case 4:
+                Console.Write("Código de entrega: ");
+                int codCambiarEnt = int.Parse(Console.ReadLine());
+                Console.WriteLine("Estados: Solicitada, Asignada, Recogida, EnRuta, Entregada, Cancelada, Reprogramada");
+                Console.Write("Nuevo estado: ");
+                string nuevoEstado = Console.ReadLine();
+                gestorEntregas.CambiarEstadoEntrega(codCambiarEnt, nuevoEstado);
+                break;
+
+            case 0:
+                volver = true;
+                break;
+
+            default:
+                Console.WriteLine("Opción inválida");
                 break;
         }
     }
 
+
     static void MenuIncidencias()
     {
-        Console.WriteLine("\n--- Gestión de Incidencias ---");
-        Console.WriteLine("1. Registrar incidencia");
-        Console.WriteLine("2. Consultar incidencia");
-        Console.WriteLine("3. Listar incidencias");
-        Console.WriteLine("4. Actualizar estado");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case "1":
-                // TODO
-                break;
-            case "2":
-                // TODO
-                break;
-            case "3":
-                gestorIncidencias.ListarIncidencias();
-                break;
-            case "4":
-                // TODO
-                break;
+            Console.WriteLine("\n--- Gestión de Incidencias ---");
+            Console.WriteLine("1. Registrar incidencia");
+            Console.WriteLine("2. Consultar incidencia");
+            Console.WriteLine("3. Listar incidencias");
+            Console.WriteLine("4. Actualizar estado");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            string op = Console.ReadLine();
+
+            switch (op)
+            {
+                case "1":
+                    Console.Write("Tipo de incidencia: ");
+                    string tipo = Console.ReadLine();
+                    Console.Write("Descripción: ");
+                    string descripcion = Console.ReadLine();
+                    Console.Write("Fecha (dd/mm/yyyy): ");
+                    string fechaInc = Console.ReadLine();
+
+                    gestorIncidencias.RegistrarIncidencia(tipo, descripcion, DateTime.Parse(fechaInc));
+                    break;
+
+                case "2":
+                    Console.Write("Código de incidencia: ");
+                    int codInc = int.Parse(Console.ReadLine());
+                    gestorIncidencias.ConsultarIncidencia(codInc);
+                    break;
+
+                case "3":
+                    gestorIncidencias.ListarIncidencias();
+                    break;
+
+                case "4":
+                    Console.Write("Código de incidencia: ");
+                    int codActInc = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Estados: Abierta, Cerrada, Pendiente");
+                    Console.Write("Nuevo estado: ");
+                    string nuevoEstadoInc = Console.ReadLine();
+                    gestorIncidencias.ActualizarEstadoIncidencia(codActInc, nuevoEstadoInc);
+                    break;
+
+                case "0":
+                    volver = true;
+                    break;
+
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
     }
 
