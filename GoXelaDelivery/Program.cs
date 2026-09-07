@@ -159,23 +159,63 @@ class Program
         Console.WriteLine("4. Cambiar estado");
         Console.WriteLine("0. Volver");
         Console.Write("Opción: ");
-        string op = Console.ReadLine();
+        int op = Console.ReadLine();
 
         switch (op)
         {
-            case "1":
-                // TODO
+            case 1:
+                Console.WriteLine("Tipo: 1=Bicicleta, 2=Motocicleta, 3=Automóvil");
+                Console.Write("Tipo: ");
+                int tipo = int.Parse(Console.ReadLine());
+                Console.Write("Placa (o vacío si es bicicleta): ");
+                string placa = Console.ReadLine();
+                Console.Write("Marca: ");
+                string marca = Console.ReadLine();
+                Console.Write("Modelo: ");
+                string modelo = Console.ReadLine();
+                Console.Write("Capacidad (kg): ");
+                int capacidad = int.Parse(Console.ReadLine());
+                Console.Write("Costo operativo base: ");
+                double costo = double.Parse(Console.ReadLine());
+
+                bool tieneRefri = false;
+                if (tipo == 3)
+                {
+                    Console.Write("¿Tiene refrigeración? (s/n): ");
+                    tieneRefri = Console.ReadLine().ToLower() == "s";
+                }
+
+                gestorVehiculos.RegistrarVehiculo(tipo, placa, marca, modelo, capacidad, costo, tieneRefri);
                 break;
-            case "2":
-                // TODO
+            case 2:
+                Console.Write("Código del vehículo: ");
+                int codigoVeh = int.Parse(Console.ReadLine());
+                gestorVehiculos.ConsultarVehiculo(codigoVeh);
                 break;
-            case "3":
+            case 3:
                 gestorVehiculos.ListarVehiculos();
                 break;
-            case "4":
-                // TODO
+            case 4:
+                Console.Write("Código del vehículo: ");
+                int codCambiar = int.Parse(Console.ReadLine());
+                Console.WriteLine("Nuevo estado: Disponible, Asignado, EnMantenimiento");
+                Console.Write("Estado: ");
+                string estadoStr = Console.ReadLine();
+                if (Enum.TryParse(estadoStr, out EstadoVehiculo nuevoEstado))
+                    gestorVehiculos.CambiarEstadoVehiculo(codCambiar, nuevoEstado);
+                else
+                    Console.WriteLine("Estado inválido");
+                break;
+
+            case 0:
+                volver = true;
+                break;
+
+            default:
+                Console.WriteLine("Opción inválida");
                 break;
         }
+
     }
 
     static void MenuPaquetes()
