@@ -92,4 +92,32 @@ class GestorPaquetes
         }
         return null;
     }
+    public Paquete ConsultarPaquete(int codigo)
+    {
+        foreach (var p in paquetes)
+        {
+            if (p.Codigo == codigo)
+            {
+                p.MostrarInformacion();
+                return p;
+            }
+        }
+        Console.WriteLine("Paquete no encontrado");
+        return null;
+    }
+
+    public void ListarPaquetes()
+    {
+        if (paquetes.Count == 0)
+        {
+            Console.WriteLine("No hay paquetes registrados");
+            return;
+        }
+
+        foreach (var p in paquetes)
+        {
+            p.MostrarInformacion();
+            Console.WriteLine("---");
+        }
+    }
 }
