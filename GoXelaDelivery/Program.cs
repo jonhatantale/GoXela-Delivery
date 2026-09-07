@@ -65,29 +65,60 @@ class Program
 
     static void MenuClientes()
     {
-        Console.WriteLine("\n--- Gestión de Clientes ---");
-        Console.WriteLine("1. Registrar cliente");
-        Console.WriteLine("2. Consultar cliente");
-        Console.WriteLine("3. Listar clientes");
-        Console.WriteLine("4. Actualizar cliente");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case "1":
-                // TODO: Registrar cliente
-                break;
-            case "2":
-                // TODO: Consultar cliente
-                break;
-            case "3":
-                gestorClientes.ListarClientes();
-                break;
-            case "4":
-                // TODO: Actualizar cliente
-                break;
+            Console.WriteLine("\n--- Gestión de Clientes ---");
+            Console.WriteLine("1. Registrar cliente");
+            Console.WriteLine("2. Consultar cliente");
+            Console.WriteLine("3. Listar clientes");
+            Console.WriteLine("4. Actualizar cliente");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op = ConvertToInt32(Console.ReadLine());
+
+            switch (op)
+            {
+                case 1:
+                    Console.Write("Nombre: ");
+                    string nombre = Console.ReadLine();
+                    Console.Write("Teléfono: ");
+                    int telefono = int.Parse(Console.ReadLine());
+                    Console.Write("Correo: ");
+                    string correo = Console.ReadLine();
+                    Console.Write("Dirección: ");
+                    string direccion = Console.ReadLine();
+                    gestorClientes.RegistrarCliente(nombre, telefono, correo, direccion);
+                    break;
+
+                case 2:
+                    Console.Write("Código del cliente: ");
+                    int codigo = int.Parse(Console.ReadLine());
+                    gestorClientes.ConsultarCliente(codigo);
+                    break;
+
+                case 3:
+                    gestorClientes.ListarClientes();
+                    break;
+
+                case 4:
+                    Console.Write("Código del cliente: ");
+                    int codActualizar = int.Parse(Console.ReadLine());
+                    Console.Write("Nuevo correo: ");
+                    string nuevoCorreo = Console.ReadLine();
+                    Console.Write("Nueva dirección: ");
+                    string nuevaDireccion = Console.ReadLine();
+                    gestorClientes.ActualizarCliente(codActualizar, nuevoCorreo, nuevaDireccion);
+                    break;
+
+                case 0:
+                    volver = true;
+                    break;
+
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
     }
 
