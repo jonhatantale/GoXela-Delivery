@@ -124,29 +124,61 @@ class Program
 
     static void MenuRepartidores()
     {
-        Console.WriteLine("\n--- Gestión de Repartidores ---");
-        Console.WriteLine("1. Registrar repartidor");
-        Console.WriteLine("2. Consultar repartidor");
-        Console.WriteLine("3. Listar repartidores");
-        Console.WriteLine("4. Cambiar estado");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while(!volver)
         {
-            case "1":
-                // TODO
-                break;
-            case "2":
-                // TODO
-                break;
-            case "3":
-                gestorRepartidores.ListarRepartidores();
-                break;
-            case "4":
-                // TODO
-                break;
+            Console.WriteLine("\n--- Gestión de Repartidores ---");
+            Console.WriteLine("1. Registrar repartidor");
+            Console.WriteLine("2. Consultar repartidor");
+            Console.WriteLine("3. Listar repartidores");
+            Console.WriteLine("4. Cambiar estado");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op = int.Parse(Console.ReadLine());
+
+            switch (op)
+            {
+                case 1:
+                    Console.Write("Nombre: ");
+                    string nombre = Console.ReadLine();
+                    Console.Write("Teléfono: ");
+                    int telefono = int.Parse(Console.ReadLine());
+                    Console.Write("Número de licencia: ");
+                    int licencia = int.Parse(Console.ReadLine());
+                    Console.Write("Tipo de licencia (A o B): ");
+                    string tipoLicencia = Console.ReadLine();
+                    gestorRepartidores.RegistrarRepartidor(nombre, telefono, licencia, tipoLicencia);
+                    break;
+                case 2:
+                    Console.Write("Código del repartidor: ");
+                    int codigo = int.Parse(Console.ReadLine());
+                    gestorRepartidores.ConsultarRepartidor(codigo);
+                    break;
+                case 3:
+                    gestorRepartidores.ListarRepartidores();
+                    break;
+                case 4:
+                    Console.Write("Código del repartidor: ");
+                    int codCambiar = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Nuevo estado: Disponible, Asignado, FueraDeServicio");
+                    Console.Write("Estado: ");
+                    string estadoStr = Console.ReadLine();
+                    if (Enum.TryParse(estadoStr, out EstadoRepartidor nuevoEstado))
+                    {
+                        gestorRepartidores.CambiarEstadoRepartidor(codCambiar, nuevoEstado);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Estado inválido");
+                    }
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    Console.WriteLine("Opcion Invalida...");
+                    break;
+            }
         }
     }
 
@@ -223,25 +255,76 @@ class Program
 
     static void MenuPaquetes()
     {
-        Console.WriteLine("\n--- Gestión de Paquetes ---");
-        Console.WriteLine("1. Registrar paquete");
-        Console.WriteLine("2. Consultar paquete");
-        Console.WriteLine("3. Listar paquetes");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while(!volver)
         {
-            case "1":
-                // TODO
-                break;
-            case "2":
-                // TODO
-                break;
-            case "3":
-                gestorPaquetes.ListarPaquetes();
-                break;
+            Console.WriteLine("\n--- Gestión de Paquetes ---");
+            Console.WriteLine("1. Registrar paquete");
+            Console.WriteLine("2. Consultar paquete");
+            Console.WriteLine("3. Listar paquetes");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op =int.Parse(Console.ReadLine());
+
+            switch (op)
+            {
+                case 1:
+                    Console.WriteLine("Tipo de paquete: 1=Documento, 2=Estándar, 3=Frágil, 4=Refrigerado");
+                    Console.Write("Tipo: ");
+                    int tipo = int.Parse(Console.ReadLine());
+                    Console.Write("Descripción: ");
+                    string descripcion = Console.ReadLine();
+                    Console.Write("Peso (kg): ");
+                    double peso = double.Parse(Console.ReadLine());
+                    Console.Write("Valor declarado: ");
+                    double valor = double.Parse(Console.ReadLine());
+                    Console.Write("Dirección de origen: ");
+                    string origen = Console.ReadLine();
+                    Console.Write("Dirección de destino: ");
+                    string destino = Console.ReadLine();
+
+                    if (tipo == 1)
+                    {
+                        gestorPaquetes.RegistrarDocumento(descripcion, peso, valor, origen, destino);
+                    }
+                    else if (tipo==2)
+                    {
+                        gestorPaquetes.RegistrarPaqueteEstandar(descripcion, peso, valor, origen, destino);
+                    }
+                    else if (tipo == 3)
+                    {
+                        gestorPaquetes.RegistrarPaqueteFragil(descripcion, peso, valor, origen, destino);
+                    }
+                    else if (tipo == 4)
+                    {
+                        Console.Write("Temperatura máxima requerida: ");
+                        double tempMax = double.Parse(Console.ReadLine());
+                        Console.Write("Temperatura mínima requerida: ");
+                        double tempMin = double.Parse(Console.ReadLine());
+                        gestorPaquetes.RegistrarProductoRefrigerado(descripcion, peso, valor, origen, destino, tempMax, tempMin);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Tipo inválido");
+                    }
+                    break;
+                case 2:
+                    Console.Write("Código del paquete: ");
+                    int codigo = int.Parse(Console.ReadLine());
+                    gestorPaquetes.ConsultarPaquete(codigo);
+                    break;
+
+                case 3:
+                    gestorPaquetes.ListarPaquetes();
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
+       
         }
     }
 
@@ -372,30 +455,63 @@ class Program
 
     static void MenuReportes()
     {
-        Console.WriteLine("\n--- Reportes ---");
-        Console.WriteLine("1. Entregas activas");
-        Console.WriteLine("2. Entregas finalizadas");
-        Console.WriteLine("3. Entregas canceladas");
-        Console.WriteLine("4. Entregas con incidencias");
-        Console.WriteLine("5. Repartidores disponibles");
-        Console.WriteLine("6. Repartidor con más entregas");
-        Console.WriteLine("7. Vehículo más utilizado");
-        Console.WriteLine("8. Cantidad de paquetes por tipo");
-        Console.WriteLine("9. Total de ingresos");
-        Console.WriteLine("10. Entrega con mayor costo");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case "1":
-                gestorReportes.ReporteEntregasActivas();
-                break;
-            case "2":
-                gestorReportes.ReporteEntregasFinalizadas();
-                break;
-                //Completar los demás casos
+            Console.WriteLine("\n--- Reportes ---");
+            Console.WriteLine("1. Entregas activas");
+            Console.WriteLine("2. Entregas finalizadas");
+            Console.WriteLine("3. Entregas canceladas");
+            Console.WriteLine("4. Entregas con incidencias");
+            Console.WriteLine("5. Repartidores disponibles");
+            Console.WriteLine("6. Repartidor con más entregas");
+            Console.WriteLine("7. Vehículo más utilizado");
+            Console.WriteLine("8. Cantidad de paquetes por tipo");
+            Console.WriteLine("9. Total de ingresos");
+            Console.WriteLine("10. Entrega con mayor costo");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op = int.Parse(Console.ReadLine());
+
+            switch (op)
+            {
+                case 1:
+                    gestorReportes.ReporteEntregasActivas();
+                    break;
+                case 2:
+                    gestorReportes.ReporteEntregasFinalizadas();
+                    break;
+                case 3:
+                    gestorReportes.ReporteEntregasCanceladas();
+                    break;
+                case 4:
+                    gestorReportes.ReporteEntregasConIncidencias();
+                    break;
+                case 5:
+                    gestorReportes.ReporteRepartidoresDisponibles();
+                    break;
+                case 6:
+                    gestorReportes.ReporteRepartidorConMasEntregas();
+                    break;
+                case 7:
+                    gestorReportes.ReporteVehiculoMasUtilizado();
+                    break;
+                case 8:
+                    gestorReportes.ReporteCantidadPaquetesPorTipo();
+                    break;
+                case 9:
+                    gestorReportes.ReporteTotalIngresos();
+                    break;
+                case 10:
+                    gestorReportes.ReporteEntregaConMayorCosto();
+                    break;
+                case 0:
+                    volver = true;
+                    break;
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
     }
 }
