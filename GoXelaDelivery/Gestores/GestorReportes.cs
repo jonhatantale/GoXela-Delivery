@@ -3,124 +3,244 @@ using System.Collections.Generic;
 
 class GestorReportes
 {
-    private GestorClientes gestorClientes;
+    private GestorEntregas gestorEntregas;
     private GestorRepartidores gestorRepartidores;
     private GestorVehiculos gestorVehiculos;
     private GestorPaquetes gestorPaquetes;
-    private GestorIncidencias gestorIncidencias;
 
-    public GestorReportes(GestorClientes clientesCons, GestorRepartidores repartidoresCons, GestorVehiculos vehiculosCons,GestorPaquetes paquetesCons,GestorIncidencias incidenciasCons)
+    public GestorReportes(GestorEntregas entregasCons, GestorRepartidores repartidoresCons, GestorVehiculos vehiculosCons, GestorPaquetes paquetesCons)
     {
-        gestorClientes = clientesCons;
+        gestorEntregas = entregasCons;
         gestorRepartidores = repartidoresCons;
         gestorVehiculos = vehiculosCons;
         gestorPaquetes = paquetesCons;
-        gestorIncidencias = incidenciasCons;
     }
-    public void ReporteClientesRegistrados()
+
+    public void ReporteEntregasActivas()
     {
-        List<Cliente> clientes = gestorClientes.Clientes;
-        Console.WriteLine($"--- Clientes registrados ({clientes.Count}) ---");
-        foreach (Cliente c in clientes)
+        List<Entrega> entregas = gestorEntregas.Entregas;
+        Console.WriteLine("--- Entregas activas ---");
+        int contador = 0;
+        foreach (Entrega e in entregas)
         {
-            c.MostrarInformacion();
+            if (!e.Estado.Equals("Entregada", StringComparison.OrdinalIgnoreCase) &&
+                !e.Estado.Equals("Cancelada", StringComparison.OrdinalIgnoreCase))
+            {
+                e.MostrarInformacion();
+                contador++;
+            }
         }
+        Console.WriteLine($"Total activas: {contador}");
     }
-    public void ReporteRepartidoresRegistrados()
+
+    public void ReporteEntregasFinalizadas()
     {
-        List<Repartidor> repartidores = gestorRepartidores.Repartidores;
-        Console.WriteLine($"--- Repartidores registrados ({repartidores.Count}) ---");
-        foreach (Repartidor r in repartidores)
+        List<Entrega> entregas = gestorEntregas.Entregas;
+        Console.WriteLine("--- Entregas finalizadas ---");
+        int contador = 0;
+        foreach (Entrega e in entregas)
         {
-            r.MostrarInformacion();
+            if (e.Estado.Equals("Entregada", StringComparison.OrdinalIgnoreCase))
+            {
+                e.MostrarInformacion();
+                contador++;
+            }
         }
+        Console.WriteLine($"Total finalizadas: {contador}");
     }
-    public void ReporteVehiculosRegistrados()
+
+    public void ReporteEntregasCanceladas()
     {
-        List<Vehiculo> vehiculos = gestorVehiculos.Vehiculos;
-        Console.WriteLine($"--- Vehículos registrados ({vehiculos.Count}) ---");
-        foreach (Vehiculo v in vehiculos)
+        List<Entrega> entregas = gestorEntregas.Entregas;
+        Console.WriteLine("--- Entregas canceladas ---");
+        int contador = 0;
+        foreach (Entrega e in entregas)
         {
-            v.MostrarInformacion();
+            if (e.Estado.Equals("Cancelada", StringComparison.OrdinalIgnoreCase))
+            {
+                e.MostrarInformacion();
+                contador++;
+            }
         }
+        Console.WriteLine($"Total canceladas: {contador}");
     }
-    public void ReportePaquetesRegistrados()
+
+    public void ReporteEntregasConIncidencias()
     {
-        List<Paquete> paquetes = gestorPaquetes.Paquetes;
-        Console.WriteLine($"--- Paquetes registrados ({paquetes.Count}) ---");
-        foreach (Paquete p in paquetes)
+        List<Entrega> entregas = gestorEntregas.Entregas;
+        Console.WriteLine("--- Entregas con incidencias ---");
+        int contador = 0;
+        foreach (Entrega e in entregas)
         {
-            p.MostrarInformacion();
+            if (e.Incidencias.Count > 0)
+            {
+                e.MostrarInformacion();
+                contador++;
+            }
         }
+        Console.WriteLine($"Total con incidencias: {contador}");
     }
+
     public void ReporteRepartidoresDisponibles()
     {
         List<Repartidor> repartidores = gestorRepartidores.Repartidores;
-        int disponibles = 0;
         Console.WriteLine("--- Repartidores disponibles ---");
+        int contador = 0;
         foreach (Repartidor r in repartidores)
         {
             if (r.EstaDisponible())
             {
                 r.MostrarInformacion();
-                disponibles++;
+                contador++;
             }
         }
-        Console.WriteLine($"Total disponibles: {disponibles}");
+        Console.WriteLine($"Total disponibles: {contador}");
     }
-    public void ReporteVehiculosDisponibles()
+
+    public void ReporteRepartidorConMasEntregas()
     {
-        List<Vehiculo> disponibles = gestorVehiculos.ObtenerVehiculosDisponibles();
-        Console.WriteLine($"--- Vehículos disponibles ({disponibles.Count}) ---");
-        foreach (Vehiculo v in disponibles)
+        List<Repartidor> repartidores = gestorRepartidores.Repartidores;
+
+        if (repartidores.Count == 0)
         {
-            v.MostrarInformacion();
+            Console.WriteLine("No hay repartidores registrados");
+            return;
         }
+
+        Repartidor mejor = repartidores[0];
+        foreach (Repartidor r in repartidores)
+        {
+            if (r.CantidadEntregas > mejor.CantidadEntregas)
+            {
+                mejor = r;
+            }
+        }
+
+        Console.WriteLine("--- Repartidor con más entregas ---");
+        mejor.MostrarInformacion();
     }
-    public void ReporteIncidenciasRegistradas()
+
+    public void ReporteVehiculoMasUtilizado()
     {
-        List<Incidencia> incidencias = gestorIncidencias.Incidencias;
-        Console.WriteLine($"--- Incidencias registradas ({incidencias.Count}) ---");
-        foreach (Incidencia i in incidencias)
+        List<Entrega> entregas = gestorEntregas.Entregas;
+
+        List<int> codigosVistos = new List<int>();
+        List<int> vecesUsado = new List<int>();
+
+        foreach (Entrega e in entregas)
         {
-            i.MostrarInformacion();
+            int codigoVehiculo = e.Vehiculo.Codigo;
+
+            int posicion = codigosVistos.IndexOf(codigoVehiculo);
+
+            if (posicion == -1)
+            {
+                codigosVistos.Add(codigoVehiculo);
+                vecesUsado.Add(1);
+            }
+            else
+            {
+                vecesUsado[posicion] = vecesUsado[posicion] + 1;
+            }
         }
+
+        if (codigosVistos.Count == 0)
+        {
+            Console.WriteLine("No hay entregas registradas todavía");
+            return;
+        }
+
+        int indiceMax = 0;
+        for (int i = 1; i < vecesUsado.Count; i++)
+        {
+            if (vecesUsado[i] > vecesUsado[indiceMax])
+            {
+                indiceMax = i;
+            }
+        }
+
+        int codigoMasUsado = codigosVistos[indiceMax];
+        int maxUsos = vecesUsado[indiceMax];
+
+        Vehiculo vehiculo = gestorVehiculos.ObtenerVehiculoPorCodigo(codigoMasUsado);
+        Console.WriteLine("--- Vehículo más utilizado ---");
+        if (vehiculo != null)
+        {
+            vehiculo.MostrarInformacion();
+        }
+        Console.WriteLine($"Usado en {maxUsos} entregas");
     }
-    public void ReportePaquetesConCondicionEspecial()
+
+    public void ReporteCantidadPaquetesPorTipo()
     {
         List<Paquete> paquetes = gestorPaquetes.Paquetes;
-        Console.WriteLine("--- Paquetes con condición especial ---");
+        int documentos = 0;
+        int estandar = 0;
+        int fragiles = 0;
+        int refrigerados = 0;
 
-            foreach(Paquete p in paquetes)
+        foreach (Paquete p in paquetes)
         {
-            if (p.RequiereCondicionEspecial())
-            {
-                p.MostrarInformacion();
-            }
+            if (p is Documento)
+                documentos++;
+            else if (p is PaqueteEstandar)
+                estandar++;
+            else if (p is PaqueteFragil)
+                fragiles++;
+            else if (p is ProductoRefrigerado)
+                refrigerados++;
         }
+
+        Console.WriteLine("--- Cantidad de paquetes por tipo ---");
+        Console.WriteLine($"Documentos: {documentos}");
+        Console.WriteLine($"Estándar: {estandar}");
+        Console.WriteLine($"Frágiles: {fragiles}");
+        Console.WriteLine($"Refrigerados: {refrigerados}");
     }
-    public void ReporteResumenGeneral()
+
+    private double SumarIngresosRecursivo(List<Entrega> entregas, int indice)
     {
-        Console.WriteLine("--- Resumen general del sistema ---");
-        Console.WriteLine($"Clientes: {gestorClientes.Clientes.Count}");
-        Console.WriteLine($"Repartidores: {gestorRepartidores.Repartidores.Count}");
-        Console.WriteLine($"Vehículos: {gestorVehiculos.Vehiculos.Count}");
-        Console.WriteLine($"Paquetes: {gestorPaquetes.Paquetes.Count}");
-        Console.WriteLine($"Incidencias: {gestorIncidencias.Incidencias.Count}");
-    }
-    private int ContarRepartidoresDisponibles(List<Repartidor> repartidores, int indice)
-    {
-        if (indice >= repartidores.Count)
+        if (indice >= entregas.Count)
         {
             return 0;
         }
-        int cuentaActual = repartidores[indice].EstaDisponible() ? 1 : 0;
-        return cuentaActual + ContarRepartidoresDisponibles(repartidores, indice + 1);
+
+        double montoActual = 0;
+        if (entregas[indice].Estado.Equals("Entregada", StringComparison.OrdinalIgnoreCase))
+        {
+            montoActual = entregas[indice].Total;
+        }
+
+        return montoActual + SumarIngresosRecursivo(entregas, indice + 1);
     }
-    public void ReporteConteoDisponibles()
+
+    public void ReporteTotalIngresos()
     {
-        List<Repartidor> repartidores = gestorRepartidores.Repartidores;
-        int total = ContarRepartidoresDisponibles(repartidores, 0);
-        Console.WriteLine($"--- Conteo recursivo de repartidores disponibles: {total} ---");
+        List<Entrega> entregas = gestorEntregas.Entregas;
+        double total = SumarIngresosRecursivo(entregas, 0);
+        Console.WriteLine($"--- Total de ingresos (entregas finalizadas): Q{total:F2} ---");
+    }
+
+    public void ReporteEntregaConMayorCosto()
+    {
+        List<Entrega> entregas = gestorEntregas.Entregas;
+
+        if (entregas.Count == 0)
+        {
+            Console.WriteLine("No hay entregas registradas todavía");
+            return;
+        }
+
+        Entrega mayorCosto = entregas[0];
+        foreach (Entrega e in entregas)
+        {
+            if (e.Total > mayorCosto.Total)
+            {
+                mayorCosto = e;
+            }
+        }
+
+        Console.WriteLine("--- Entrega con mayor costo ---");
+        mayorCosto.MostrarInformacion();
     }
 }
