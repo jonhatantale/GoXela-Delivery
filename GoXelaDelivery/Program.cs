@@ -311,29 +311,58 @@ class Program
 
     static void MenuIncidencias()
     {
-        Console.WriteLine("\n--- Gestión de Incidencias ---");
-        Console.WriteLine("1. Registrar incidencia");
-        Console.WriteLine("2. Consultar incidencia");
-        Console.WriteLine("3. Listar incidencias");
-        Console.WriteLine("4. Actualizar estado");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        string op = Console.ReadLine();
-
-        switch (op)
+        bool volver = false;
+        while (!volver)
         {
-            case "1":
-                // TODO
-                break;
-            case "2":
-                // TODO
-                break;
-            case "3":
-                gestorIncidencias.ListarIncidencias();
-                break;
-            case "4":
-                // TODO
-                break;
+            Console.WriteLine("\n--- Gestión de Incidencias ---");
+            Console.WriteLine("1. Registrar incidencia");
+            Console.WriteLine("2. Consultar incidencia");
+            Console.WriteLine("3. Listar incidencias");
+            Console.WriteLine("4. Actualizar estado");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            string op = Console.ReadLine();
+
+            switch (op)
+            {
+                case "1":
+                    Console.Write("Tipo de incidencia: ");
+                    string tipo = Console.ReadLine();
+                    Console.Write("Descripción: ");
+                    string descripcion = Console.ReadLine();
+                    Console.Write("Fecha (dd/mm/yyyy): ");
+                    string fechaInc = Console.ReadLine();
+
+                    gestorIncidencias.RegistrarIncidencia(tipo, descripcion, DateTime.Parse(fechaInc));
+                    break;
+
+                case "2":
+                    Console.Write("Código de incidencia: ");
+                    int codInc = int.Parse(Console.ReadLine());
+                    gestorIncidencias.ConsultarIncidencia(codInc);
+                    break;
+
+                case "3":
+                    gestorIncidencias.ListarIncidencias();
+                    break;
+
+                case "4":
+                    Console.Write("Código de incidencia: ");
+                    int codActInc = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Estados: Abierta, Cerrada, Pendiente");
+                    Console.Write("Nuevo estado: ");
+                    string nuevoEstadoInc = Console.ReadLine();
+                    gestorIncidencias.ActualizarEstadoIncidencia(codActInc, nuevoEstadoInc);
+                    break;
+
+                case "0":
+                    volver = true;
+                    break;
+
+                default:
+                    Console.WriteLine("Opción inválida");
+                    break;
+            }
         }
     }
 
