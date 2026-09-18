@@ -184,18 +184,18 @@ class Program
 
     static void MenuVehiculos()
     {
-        Console.WriteLine("\n--- Gestión de Vehículos ---");
-        Console.WriteLine("1. Registrar vehículo");
-        Console.WriteLine("2. Consultar vehículo");
-        Console.WriteLine("3. Listar vehículos");
-        Console.WriteLine("4. Cambiar estado");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        int op = int.Parse(Console.ReadLine());
-
         bool volver = false;
         while (!volver)
         {
+            Console.WriteLine("\n--- Gestión de Vehículos ---");
+            Console.WriteLine("1. Registrar vehículo");
+            Console.WriteLine("2. Consultar vehículo");
+            Console.WriteLine("3. Listar vehículos");
+            Console.WriteLine("4. Cambiar estado");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op = int.Parse(Console.ReadLine());
+
             switch (op)
             {
                 case 1:
