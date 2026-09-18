@@ -16,7 +16,7 @@ class Program
         while (!salir)
         {
             Console.WriteLine("\n========== GOXELA DELIVERY ==========");
-            Console.WriteLine("1. Gestión de clientes");
+            Console.WriteLine("1. Gestión de clientes ");
             Console.WriteLine("2. Gestión de repartidores");
             Console.WriteLine("3. Gestión de vehículos");
             Console.WriteLine("4. Gestión de paquetes");
