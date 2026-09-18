@@ -330,18 +330,18 @@ class Program
 
     static void MenuEntregas()
     {
-        Console.WriteLine("\n--- Gestión de Entregas ---");
-        Console.WriteLine("1. Registrar entrega");
-        Console.WriteLine("2. Consultar entrega");
-        Console.WriteLine("3. Listar entregas");
-        Console.WriteLine("4. Cambiar estado");
-        Console.WriteLine("0. Volver");
-        Console.Write("Opción: ");
-        int op = int.Parse(Console.ReadLine());
-
         bool volver = false;
         while (!volver)
         {
+            Console.WriteLine("\n--- Gestión de Entregas ---");
+            Console.WriteLine("1. Registrar entrega");
+            Console.WriteLine("2. Consultar entrega");
+            Console.WriteLine("3. Listar entregas");
+            Console.WriteLine("4. Cambiar estado");
+            Console.WriteLine("0. Volver");
+            Console.Write("Opción: ");
+            int op = int.Parse(Console.ReadLine());
+
             switch (op)
             {
                 case 1:
